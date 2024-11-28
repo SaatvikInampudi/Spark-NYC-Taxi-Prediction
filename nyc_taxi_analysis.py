@@ -78,7 +78,9 @@ clusters = model.transform(cluster_data)
 # Save cluster centers and data
 cluster_centers = model.clusterCenters()
 clusters.select('pickup_longitude', 'pickup_latitude', 'prediction').write.csv(
-    's3a://nyc-taxi-data-7vik/output/geo_clusters', header=True
+    's3a://nyc-taxi-data-7vik/output/geo_clusters',
+    header=True,
+    mode='overwrite'
 )
 
 # Analysis 5: Fare Prediction Model
@@ -106,7 +108,7 @@ print(f"RMSE: {test_results.rootMeanSquaredError}")
 print(f"R^2: {test_results.r2}")
 
 # Save the model
-lr_model.save('s3a://nyc-taxi-data-7vik/output/fare_prediction_model')
+lr_model.write().overwrite().save('s3a://nyc-taxi-data-7vik/output/fare_prediction_model')
 
 
 # Stop Spark Session 
